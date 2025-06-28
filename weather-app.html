@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Akil Hossain</title>
+  <link rel="stylesheet" href="weather-app.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- -------Font Awesome---------->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body class="bg-gradient-to-r from-[#2f243a] via-[#3b2f52] to-[#40385f]">
+
+  <div class="w-[50%] lg:w-[35%] mx-auto bg-gradient-to-r from-orange-400 p-5 m-[70px] rounded-xl ">
+    <div class="flex justify-around m-3 ">
+
+      <input type="text" class="bg-white p-3 rounded-3xl input lg:w-[70%] border-blue-500 border-2 "  placeholder="Enter a city name ❤️">
+      <button onclick="checkWeather()" class="bg-white w-[50px] rounded-3xl hover:cursor-pointer active:bg-green-400 hover:bg-orange-300  duration-300 ">
+        <i class="fa-solid fa-magnifying-glass" ></i>
+      </button>
+    </div>
+
+    <div class=" text-white font-semibold ">
+      <div class="flex flex-col items-center m-[20px] text-[25px] mb-[50px] font-bold">
+        <!-- <i class="fa-solid fa-cloud-rain mt-[15px] weather-icon"></i> -->
+         <img class="weather-icon" src="weather-app-img/images/drizzle.png">
+       
+          <h1 class="temp">22°C </h1>
+          <h2 class="city">Dhaka</h2>
+        
+        <p class="weather-condition"></p>
+        <p class="feels-like"></p>
+      </div>
+    
+
+      <div class="flex justify-between items-center text-center">
+        <div class="flex">
+          <img class="w-[50px]" src="weather-app-img/images/humidity.png">
+          <div class="text-left ml-2">
+            <p class="humidity">50%</p>
+            <p>humidity</p>
+          </div>
+        </div>
+
+        <div class="flex">
+          <img class="w-[50px]" src="weather-app-img/images/wind.png">
+          <div class="text-left ml-2">
+            <p class="wind">20km/h</p>
+            <p>Wind speed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <p class="text-center text-sm text-blue-500 ">Designed & Developed by <strong>@Akil Hossain ❤️</strong></p>
+
+
+  <script>
+    const apiKey="d64ddcab539071c231839c1f4e9b2a93";
+    const weatherIcon=document.querySelector('.weather-icon');
+
+
+    
+    async function checkWeather(){
+
+      const search=document.querySelector('.input');
+      const city=search.value;
+
+      const apiUrl=`https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&appid=${apiKey}`;
+      //${city}&appid=${apiKey}
+
+      const response = await fetch(apiUrl);
+      let data = await response.json();
+
+      console.log(data);
+      document.querySelector('.city').innerHTML= data.name;
+      document.querySelector('.temp').innerHTML= data.main.temp + '°C';
+      document.querySelector('.feels-like').innerHTML =`Feels Like ` + data.main.feels_like +`°C`;
+      document.querySelector('.humidity').innerHTML= data.main.humidity + '%';
+      document.querySelector('.wind').innerHTML= data.wind.speed + 'Km/h' ;
+
+      const condition = data.weather[0].main;
+      console.log("Weather condition:", condition);
+      document.querySelector('.weather-condition').innerHTML =`${condition}` ;
+
+      
+
+
+      if(data.weather[0].main === "Clouds" ){
+        weatherIcon.src="weather-app-img/images/clouds.png";
+      }else if(data.weather[0].main === "Clear"){
+        weatherIcon.src="weather-app-img/images/clear.png";
+      }else if(data.weather[0].main === 'Drizzle'){
+        weatherIcon.src="weather-app-img/images/drizzle.png";
+      }else if(data.weather[0].main ==='Mist'){
+        weatherIcon.src="weather-app-img/images/mist.png";
+      }else if(data.weather[0].main ==='Rain'){
+        weatherIcon.src="weather-app-img/images/rain.png";
+      }else if(data.weather[0].main ==='Wind'){
+        weatherIcon.src="weather-app-img/images/wind.png";
+      }else if(data.weather[0].main ==='Snow'){
+        weatherIcon.src="weather-app-img/images/snow.png";
+      }
+    }
+  </script>
+  
+</body>
+</html>
